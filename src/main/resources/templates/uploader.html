@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        input[type="file"] {
+            border: 2px dashed #d1d5db;
+            padding: 15px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 20px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .container p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            input[type="file"] {
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Upload Your File</h1>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p>Choose a file and upload it to the server</p>
+    <div id="status"></div>
+</div>
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var fileInput = document.getElementById('fileInput');
+        var formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload-file', true);
+        xhr.onload = function () {
+            var statusDiv = document.getElementById('status');
+            if (xhr.status === 200) {
+                statusDiv.innerHTML = '<p style="color: green;">File uploaded successfully!</p>';
+            } else {
+                statusDiv.innerHTML = '<p style="color: red;">File upload failed.</p>';
+            }
+        };
+        xhr.send(formData);
+    });
+</script>
+</body>
+</html>
